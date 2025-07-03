@@ -1,0 +1,552 @@
+blueprint:
+  name: 스마트 자동화
+  description: "스마트 자동화는 공간을 자동으로 관리해줍니다."
+  domain: automation
+  input:
+    climate_mode:
+      name: 에너지모드
+      description: "공간을 어떻게 관리하겠어요?"
+      default: normal
+      selector:
+        select:
+          options:
+            - value: economy
+              label: "절약모드: 에너지를 절약하지만 쾌적도가 낮습니다."
+            - value: ecomode
+              label: "에코모드: 에너지를 약간 절약합니다."
+            - value: normal
+              label: "보통모드: 기본모드입니다."
+            - value: comfort
+              label: "쾌적모드: 보통보다 조금 더 쾌적합니다."
+            - value: power
+              label: "파워모드: 에너지 소모가 높습니다."
+
+    ac_entity:
+      name: 에어컨
+      description: 사용할 에어컨을 고르세요.
+      selector:
+        entity:
+          domain: climate
+    heater_entity:
+      name: 보일러
+      description: 사용할 보일러를 고르세요.
+      selector:
+        entity:
+          domain: climate
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+          
+
+
+    sum_start:
+      name: 여름 시작
+      default: "05-01"
+      selector:
+        text: {}
+    fall_start:
+      name: 여름 끝
+      default: "09-01"
+      selector:
+        text: {}
+    sum_morning_time:
+      name: 여름 아침
+      default: "08:00:00"
+      selector:
+        time: {}
+        
+    sum_afternoon_time:
+      name: 여름 낮
+      default: "12:00:00"
+      selector:
+        time: {}
+        
+    sum_evening_time:
+      name: "여름 저녁"
+      default: "17:00:00"
+      selector:
+        time: {}      
+        
+    sum_sleep_time:
+      name: "여름 취침"
+      default: "23:00:00"
+      selector:
+        time: {}  
+          
+        
+    cool_ac_mode:
+      name: "냉방모드(여름)"
+      description: 냉방 시 사용할 에어컨 모드
+      default: cool
+      selector:
+        select:
+          options:
+            - value: "auto"
+              label: "자동"
+            - value: "cool"
+              label: "냉방"
+            - value: "dry"
+              label: "제습"
+            - value: "off"
+              label: "꺼짐"
+          mode: dropdown 
+
+    fan_ac_mode:
+      name: "대기모드(여름 취침)"
+      description: "대기 시 사용할 에어컨 모드(취침)"
+      default: fan_only
+      selector:
+        select:
+          options:
+            - value: "off"
+              label: "꺼짐"
+            - value: "fan_only"
+              label: "송풍"
+            - value: "cool"
+              label: "냉방"
+          mode: dropdown 
+        
+              
+    ofset_temp_cool:
+      name: "목표온도(여름 오프셋)"
+      description: 목표온도 27, 오프셋 1이면 26~28도를 유지합니다.
+      default: 1
+      selector:
+        number:
+          min: 0
+          max: 10
+          unit_of_measurement: "°C"
+          step: 1
+              
+    morning_cool_temp:
+      name: "목표온도(여름 아침)"
+      default: 23
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+
+    afternoon_cool_temp:
+      name: "목표온도(여름 낮)"
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+          
+    evening_cool_temp:
+      name: "목표온도(여름 저녁)"
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+          
+    sleep_cool_temp:
+      name: "목표온도(여름 취침)"
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    winter_start:
+      name: 겨울 시작
+      default: "12-01"
+      selector:
+        text: {}
+    spring_start:
+      name: 겨울 끝
+      default: "03-01"
+      selector:
+        text: {}
+    win_morning_time:
+      name: 겨울 아침
+      default: "08:00:00"
+      selector:
+        time: {}
+        
+    win_afternoon_time:
+      name: 겨울 낮
+      default: "12:00:00"
+      selector:
+        time: {}
+        
+    win_evening_time:
+      name: "겨울 저녁"
+      default: "17:00:00"
+      selector:
+        time: {}      
+        
+    win_sleep_time:
+      name: "겨울 취침"
+      default: "23:00:00"
+      selector:
+        time: {}  
+          
+
+    heat_mode:
+      name: "난방모드(겨울)"
+      description: 냉방 시 사용할 에어컨 모드
+      default: cool
+      selector:
+        select:
+          options:
+            - value: "heat"
+              label: "난방"
+            - value: "off"
+              label: "꺼짐"
+          mode: dropdown 
+
+    fan_heat_mode:
+      name: "대기모드(겨울 취침)"
+      description: "대기 시 사용할 에어컨 모드(취침)"
+      default: fan_only
+      selector:
+        select:
+          options:
+            - value: "off"
+              label: "꺼짐"
+            - value: "heat"
+              label: "난방"
+            
+          mode: dropdown 
+        
+    ofset_temp_heat:
+      name: "목표온도(겨울 오프셋)"
+      description: 목표온도 27, 오프셋 1이면 26~28도를 유지합니다.
+      default: 1
+      selector:
+        number:
+          min: 0
+          max: 10
+          unit_of_measurement: "°C"
+          step: 1
+          
+    morning_heat_temp:
+      name: "목표온도(겨울 아침)"
+      default: 23
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+
+    afternoon_heat_temp:
+      name: "목표온도(겨울 낮)"
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+          
+    evening_heat_temp:
+      name: "목표온도(겨울 저녁)"
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+          
+    sleep_heat_temp:
+      name: "목표온도(겨울 취침)"
+      default: 25
+      selector:
+        number:
+          min: 5
+          max: 35
+          unit_of_measurement: "°C"
+          step: 1
+
+
+        
+
+
+
+
+trigger:
+  - platform: time_pattern
+    seconds: "/10"
+
+condition: []
+
+action:
+  - variables:
+      
+      today: "{{ now().strftime('%m-%d') }}"
+      sum_morning_time: !input sum_morning_time
+      sum_afternoon_time: !input sum_afternoon_time
+      sum_evening_time: !input sum_evening_time
+      sum_sleep_time: !input sum_sleep_time
+      win_morning_time: !input win_morning_time
+      win_afternoon_time: !input win_afternoon_time
+      win_evening_time: !input win_evening_time
+      win_sleep_time: !input win_sleep_time
+      spring_start: !input spring_start
+      sum_start: !input sum_start
+      fall_start: !input fall_start
+      winter_start: !input winter_start
+      morning_time: >
+        {% if sum_start <= today < fall_start %}
+          {{ sum_morning_time }}
+        {% else %}
+          {{ win_morning_time }}
+        {% endif %}
+      evening_time: >
+        {% if sum_start <= today < fall_start %}
+          {{ sum_evening_time }}
+        {% else %}
+          {{ win_evening_time }}
+        {% endif %}
+      sleep_time: >
+        {% if sum_start <= today < fall_start %}
+          {{ sum_sleep_time }}
+        {% else %}
+          {{ win_sleep_time }}
+        {% endif %}
+      afternoon_time: >
+        {% if sum_start <= today < fall_start %}
+          {{ sum_afternoon_time }}
+        {% else %}
+          {{ win_afternoon_time }}
+        {% endif %}
+      ac_entity: !input ac_entity
+      heater_entity: !input heater_entity
+      morning_heat_temp: !input morning_heat_temp
+      afternoon_heat_temp: !input afternoon_heat_temp
+      morning_cool_temp: !input morning_cool_temp
+      afternoon_cool_temp: !input afternoon_cool_temp
+      sleep_heat_temp: !input sleep_heat_temp
+      sleep_cool_temp: !input sleep_cool_temp
+      evening_heat_temp: !input evening_heat_temp
+      evening_cool_temp: !input evening_cool_temp
+      cool_ofset: !input ofset_temp_cool
+      heat_ofset: !input ofset_temp_heat
+      current_time: "{{ now().strftime('%H:%M:%S') }}"
+      is_sleep: >
+        {{ (current_time >= sleep_time or current_time < morning_time) }}
+         
+      is_morning: >
+        {{ (current_time >= morning_time and current_time < afternoon_time) }}
+      is_afternoon: >
+        {{ (current_time >= afternoon_time and current_time < evening_time) }}
+      is_evening: >
+        {{ (current_time >= evening_time and current_time < sleep_time) }}
+
+      
+      maintain_heat_temp: >
+        {% if is_afternoon %}
+          {{ afternoon_heat_temp | float }}
+        {% elif is_morning %}
+          {{ morning_heat_temp | float }}
+        {% elif is_evening %}
+          {{ evening_heat_temp | float }}
+        {% else %}
+          {{ sleep_heat_temp | float }}
+        {% endif %}
+        
+      maintain_cool_temp: >
+        {% if is_afternoon %}
+          {{ afternoon_cool_temp | float }}
+        {% elif is_morning %}
+          {{ morning_cool_temp | float }}
+        {% elif is_evening %}
+          {{ evening_cool_temp | float }}
+        {% else %}
+          {{ sleep_cool_temp | float }}
+        {% endif %}
+
+      fan_ac_mode: !input fan_ac_mode
+      cool_ac_mode: !input cool_ac_mode
+      fan_heat_mode: !input fan_heat_mode
+      heat_use_mode: !input heat_mode
+      heat_mode: >
+        {% if is_sleep %}
+          {{ fan_heat_mode }}
+        {% else %}
+          {{ heat_use_mode }}
+        {% endif %}
+      ac_mode: >
+        {% if is_sleep %}
+          {{ fan_ac_mode }}
+        {% else %}
+          {{ cool_ac_mode }}
+        {% endif %}
+
+      climate_mode: !input climate_mode
+      fan_mode: >
+        {% if climate_mode == 'economy' %} 1
+        {% elif climate_mode == 'comfort' %} 3
+        {% elif climate_mode == 'power' %} max
+        {% elif climate_mode == 'ecomode' %} 2
+        {% else %} auto
+        {% endif %}
+
+      heating_temp: >
+        {% if climate_mode == 'economy' %} {{ maintain_heat_temp + 1 }}
+        {% elif climate_mode == 'ecomode' %} {{ maintain_heat_temp + 2 }}
+        {% elif climate_mode == 'comfort' %} {{ maintain_heat_temp + 3 }}
+        {% elif climate_mode == 'power' %} 30
+        {% else %} {{ maintain_heat_temp + 2 }}
+        {% endif %}
+
+      cooling_temp: >
+        {% if climate_mode == 'economy' %} {{ maintain_cool_temp - 1 }}
+        {% elif climate_mode == 'comfort' %} {{ maintain_cool_temp - 3 }}
+        {% elif climate_mode == 'ecomode' %} {{ maintain_cool_temp - 2 }}
+        {% elif climate_mode == 'power' %} 18
+        {% else %} {{ maintain_cool_temp - 2 }}
+        {% endif %}
+
+
+      allow_ac: >
+        {{ (sum_start <= today < fall_start) }}
+    
+      allow_heater: >
+        {{ (winter_start <= today < spring_start) }}
+         
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ allow_heater and (state_attr(heater_entity, 'current_temperature') | float(0)) < (maintain_heat_temp | float(0)) - heat_ofset }}
+        sequence:
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ ac_entity }}"
+            data:
+              hvac_mode: "off"
+
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ heater_entity }}"
+            data:
+              hvac_mode: "{{ heat_mode }}"
+
+          - service: climate.set_temperature
+            target:
+              entity_id: "{{ heater_entity }}"
+            data:
+              temperature: "{{ heating_temp }}"
+
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ allow_ac and (state_attr(ac_entity, 'current_temperature') | float(0)) > (maintain_cool_temp | float(0)) + cool_ofset }}
+        sequence:
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ heater_entity }}"
+            data:
+               hvac_mode: "off"
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ ac_entity }}"
+            data:
+              hvac_mode: "{{ ac_mode }}"
+
+          - service: climate.set_temperature
+            target:
+              entity_id: "{{ ac_entity }}"
+            data:
+              temperature: "{{ cooling_temp }}"
+
+          - service: climate.set_fan_mode
+            target:
+              entity_id: "{{ ac_entity }}"
+            data:
+              fan_mode: "{{ fan_mode }}" 
+              
+              
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ allow_heater == false and (state_attr(ac_entity, 'current_temperature') | float(0)) <= (maintain_cool_temp | float(0)) - cool_ofset }}
+        sequence:
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ heater_entity }}"
+            data:
+               hvac_mode: "off"
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ ac_entity }}"
+            data:
+              hvac_mode: "off"
+
+
+      - conditions:
+          - condition: template
+            value_template: >
+              {{ allow_ac == false and (state_attr(heater_entity, 'current_temperature') | float(0)) >= (maintain_heat_temp | float(0)) + heat_ofset }}
+        sequence:
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ heater_entity }}"
+            data:
+               hvac_mode: "off"
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: "{{ ac_entity }}"
+            data:
+              hvac_mode: "off"
