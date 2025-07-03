@@ -242,7 +242,7 @@ blueprint:
 
     heat_mode:
       name: "난방모드(겨울)"
-      description: 냉방 시 사용할 에어컨 모드
+      description: 난방 시 사용할 에어컨 모드
       default: cool
       selector:
         select:
